@@ -14,6 +14,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('vendor/izitoast/dist/css/iziToast.min.css') }}">
     @livewireStyles
 </head>
 
@@ -35,6 +36,9 @@
             {{ $slot }}
         </main>
     </div>
+
+    <script src="{{ asset('vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('vendor/izitoast/dist/js/iziToast.min.js') }}"></script>
     @livewireScripts
 </body>
 

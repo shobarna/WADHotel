@@ -34,6 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::get('guests/create', App\Http\Livewire\Guests\Create::class)->name('guests.create');
     Route::get('guests/update/{id}', App\Http\Livewire\Guests\Update::class)->name('guests.update');
 
+    // PEMESANAN 
+    Route::get('bookings', App\Http\Livewire\Bookings\Index::class)->name('bookings.index');
+    Route::get('bookings/create', App\Http\Livewire\Bookings\Create::class)->name('bookings.create');
+    Route::get('bookings/update/{id}', App\Http\Livewire\Bookings\Update::class)->name('bookings.update');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

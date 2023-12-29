@@ -29,6 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::get('rooms/create', App\Http\Livewire\Rooms\Create::class)->name('rooms.create');
     Route::get('rooms/update/{id}', App\Http\Livewire\Rooms\Update::class)->name('rooms.update');
 
+    // TAMU 
+    Route::get('guests', App\Http\Livewire\Guests\Index::class)->name('guests.index');
+    Route::get('guests/create', App\Http\Livewire\Guests\Create::class)->name('guests.create');
+    Route::get('guests/update/{id}', App\Http\Livewire\Guests\Update::class)->name('guests.update');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

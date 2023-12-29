@@ -4,30 +4,19 @@
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div>
                     <div class="flex just items-center gap-x-3">
-                        <h2 class="text-lg font-medium text-gray-800">Manajemen Kamar</h2>
+                        <h2 class="text-lg font-medium text-gray-800">Manajemen Tamu</h2>
 
-                        <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">{{ $total }}
-                            kamar</span>
+                        <span class="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full">240
+                            tamu</span>
                     </div>
 
-                    <p class="mt-1 text-sm text-gray-500">total kamar yang <span class="text-green-600">Available</span>
-                        adalah {{ $available }} kamar
-                    </p>
+                    {{-- <p class="mt-1 text-sm text-gray-500">total kamar yang <span class="text-green-600">Available</span>
+                        adalah
+                    </p> --}}
                 </div>
 
                 <div class="flex items-center gap-x-3">
-                    <a href="{{ route('rooms.type') }}"
-                        class="flex items-center justify-center w-1/2 px-4 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                        </svg>
-
-                        <span>Tipe Kamar</span>
-                    </a>
-
-                    <a href="{{ route('rooms.create') }}"
+                    <a href="{{ route('guests.create') }}"
                         class="flex items-center justify-center w-1/2 px-4 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
@@ -35,38 +24,13 @@
                                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
 
-                        <span>Tambah kamar</span>
+                        <span>Tamu baru</span>
                     </a>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-x-8">
+            <div class="grid grid-cols-3 justify-end gap-x-8">
                 <div>
-                    <label for="byType" class="block text-sm font-medium leading-6 text-gray-900">Berdasarkan
-                        tipe</label>
-                    <div class="mt-2">
-                        <select id="byType" wire:model="byType"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                            <option value="">Semua</option>
-                            @foreach ($types as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label for="byStatus" class="block text-sm font-medium leading-6 text-gray-900">Berdasarkan
-                        Status</label>
-                    <div class="mt-2">
-                        <select id="byStatus" wire:model="byStatus"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                            <option value="">Semua</option>
-                            <option value="0">Available</option>
-                            <option value="1">Unavailable</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label for="search" class="block text-sm font-medium leading-6 text-gray-900">Nomor kamar</label>
+                    <label for="search" class="block text-sm font-medium leading-6 text-gray-900">Cari</label>
                     <div class="mt-2">
                         <input type="text" wire:model="search" id="search" placeholder="Semua"
                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -78,33 +42,34 @@
                     <thead class="bg-gray-50 text-gray-600 font-medium border-b">
                         <tr>
                             <th class="py-3 px-6 w-1/3 text-xs font-semibold text-black uppercase tracking-wider">
-                                Nomor</th>
+                                Nama</th>
                             <th class="py-3 px-6 w-1/3 text-xs font-semibold text-black uppercase tracking-wider">
-                                Tipe Kamar</th>
+                                No Telp</th>
                             <th class="py-3 px-6 w-1/3 text-xs font-semibold text-black uppercase tracking-wider">
-                                Status</th>
+                                Email</th>
+                            <th class="py-3 px-6 w-1/3 text-xs font-semibold text-black uppercase tracking-wider">
+                                Address</th>
                             <th class="">
                             </th>
                         </tr>
                     </thead>
                     <tbody class="text-gray-600 divide-y">
-                        @forelse ($rooms as $item)
+                        @forelse ($guests as $item)
                             <tr class="">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ $item->number }}
+                                    {{ $item->firstname }} {{ $item->lastname }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ $item->type->name }}
+                                    {{ $item->phone }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if (!$item->status)
-                                        <span class="text-green-600">Available</span>
-                                    @else
-                                        Booked
-                                    @endif
+                                    {{ $item->email }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {{ $item->address }}
                                 </td>
                                 <td class="flex gap-x-2 px-6 py-4 cursor-default">
-                                    <a href="{{ route('rooms.update', ['id' => $item->id]) }}"
+                                    <a href="{{ route('guests.update', ['id' => $item->id]) }}"
                                         class="px-1 py-2 rounded flex items-center text-xs transition duration-300 hover:bg-sky-100 hover:shadow">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-sky-600">
@@ -136,9 +101,6 @@
                         @endforelse
                     </tbody>
                 </table>
-                <div class="px-8 pb-4">
-                    {{ $rooms->links() }}
-                </div>
             </div>
         </div>
     </div>

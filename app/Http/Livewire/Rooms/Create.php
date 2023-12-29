@@ -10,16 +10,17 @@ use Livewire\Component;
 class Create extends Component
 {
     public $room = [];
+    public $type;
     public $facilities = [];
 
     public function updatedRoomTypeId($value)
     {
-        $type = Type::find($value);
-        $this->facilities = $type->facilities;
+        $this->type = Type::find($value);
+        $this->facilities = $this->type->facilities;
     }
 
     protected $rules = [
-        'room.number' => 'required|max:3',
+        'room.number' => 'required|max:3|unique:rooms,number',
         'room.type_id' => 'required',
     ];
 

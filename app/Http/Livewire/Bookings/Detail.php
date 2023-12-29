@@ -9,6 +9,21 @@ class Detail extends Component
 {
     public $data;
 
+    protected $listeners = [
+        'confirm' => 'cancel'
+    ];
+
+    public function validationCancel()
+    {
+        $this->dispatchBrowserEvent('validation');
+    }
+
+    public function cancel()
+    {
+        $this->data->update(['status' => 'Cancel']);
+        $this->dispatchBrowserEvent('info', ['message' => 'Pemesanan telah dibatalkan']);
+    }
+
     public function checkout()
     {
         $this->data->update(['status' => 'Done']);

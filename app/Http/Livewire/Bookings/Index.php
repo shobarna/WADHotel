@@ -9,8 +9,7 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     protected $listeners = [
-        'confirm' => 'delete',
-        'confirmBulk' => 'deleteSelected'
+        'confirm' => 'delete'
     ];
 
     public function validationDelete($id)

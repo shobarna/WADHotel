@@ -17,9 +17,9 @@
                         <h2 class="text-lg font-medium text-gray-800">Detail pemesanan</h2>
                     </div>
                 </div>
-                @if ($data->status !== 'Done')
+                @if ($data->status === 'Booked')
                     <div class="flex items-center gap-x-3">
-                        <button type="submit" wire:click="reschedule"
+                        <button wire:click="reschedule"
                             class="flex items-center gap-x-2 rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -29,7 +29,7 @@
                             <span>Reschedule</span>
                         </button>
 
-                        <button type="submit" wire:click="store"
+                        <button wire:click="validationCancel"
                             class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Pembatalan</button>
                     </div>
                 @endif
@@ -152,8 +152,8 @@
                         </div>
                     @endforeach
                     <div class="pt-6 border-t flex items-center justify-end">
-                        @if ($data->status !== 'Done')
-                            <button type="submit" wire:click="checkout"
+                        @if ($data->status === 'Booked')
+                            <button wire:click="checkout"
                                 class="flex items-center gap-x-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -168,5 +168,42 @@
         </div>
     </div>
 
-    @include('validation')
+    <script>
+        window.addEventListener('validation', event => {
+            iziToast.question({
+                timeout: 20000,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'question',
+                zindex: 999,
+                title: 'Peringatan!',
+                message: 'Apakah anda yakin?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YA</b></button>', function(instance, toast) {
+
+                        Livewire.emit('confirm');
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>TIDAK</button>', function(instance, toast) {
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function(instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function(instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+        })
+    </script>
 </div>

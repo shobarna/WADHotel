@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Rooms;
+namespace App\Http\Livewire\Bookings;
 
-use App\Models\Room;
-use App\Models\Type;
+use App\Models\Booking;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,36 +22,36 @@ class Index extends Component
 
     public function delete($id)
     {
-        $type = Room::find($id);
+        $booking = Booking::find($id);
 
-        $type->delete();
+        $booking->rooms()->detach();
+
+        $booking->delete();
 
         $this->dispatchBrowserEvent('deleted');
     }
 
     use WithPagination;
-    public $search, $byType, $byStatus;
+    public $search, $byStatus;
 
     public function render()
     {
-        $rooms = Room::when($this->search, function ($query) {
-            $query->search($this->search);
-        })->when($this->byType, function ($query) {
-            $query->where('type_id', $this->byType);
+        $bookings = Booking::when($this->search, function ($query) {
+            $query->whereHas('guest', function ($query) {
+                $query->where('firstname', 'like', "%{$this->search}%")->orWhere('lastname', 'like', "%{$this->search}%");
+            });
         })->when($this->byStatus, function ($query) {
             $query->where('status', $this->byStatus);
         })
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        $total = Room::count();
-        $available = Room::where('status', 0)->count();
+        $total = Booking::count();
+        // $available = Booking::where('status', 0)->count();
 
-        return view('livewire.rooms.index', [
-            'rooms' => $rooms,
-            'types' => Type::all(),
+        return view('livewire.bookings.index', [
+            'bookings' => $bookings,
             'total' => $total,
-            'available' => $available,
         ]);
     }
 }

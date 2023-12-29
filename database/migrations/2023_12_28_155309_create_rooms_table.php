@@ -28,7 +28,8 @@ return new class extends Migration
 
         Schema::create('facility_type', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
         });
 
         Schema::create('rooms', function (Blueprint $table) {

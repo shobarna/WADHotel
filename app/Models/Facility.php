@@ -9,5 +9,10 @@ class Facility extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['name', 'desc'];
+
+    public function types()
+    {
+        return $this->belongsToMany(Type::class, 'facility_type');
+    }
 }

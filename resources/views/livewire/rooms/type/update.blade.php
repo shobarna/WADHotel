@@ -10,7 +10,7 @@
                     </svg>
                 </a>
                 <div>
-                    <h2 class="text-lg font-medium text-gray-800">Formulir tipe kamar</h2>
+                    <h2 class="text-lg font-medium text-gray-800">Detail tipe kamar</h2>
 
                     <p class="mt-1 text-sm text-gray-500">Kolom input <span class="text-red-600">*</span> bermakna wajib
                         terisi
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="mt-6 flex items-center justify-end">
-                        <button type="submit" wire:click="store"
+                        <button type="submit" wire:click="update"
                             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
                     </div>
                 </div>

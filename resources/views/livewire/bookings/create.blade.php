@@ -1,5 +1,4 @@
 <div>
-    @dump($rooms)
     <div class="py-12" x-data="{ open: false }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
             <div class="sm:flex sm:items-center sm:justify-between">

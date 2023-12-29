@@ -20,4 +20,13 @@ class Booking extends Model
     {
         return $this->belongsToMany(Room::class, 'booking_room')->withPivot('checkin', 'checkout', 'qty');
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('status', 'like', $term)
+                ->orWhere('duration', 'like', $term);
+        });
+    }
 }

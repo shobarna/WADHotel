@@ -37,7 +37,9 @@ class Index extends Component
     public function render()
     {
         $bookings = Booking::when($this->search, function ($query) {
-            $query->search($this->search);
+            $query->whereHas('guest', function ($query) {
+                $query->where('firstname', 'like', "%{$this->search}%")->orWhere('lastname', 'like', "%{$this->search}%");
+            });
         })->when($this->byStatus, function ($query) {
             $query->where('status', $this->byStatus);
         })

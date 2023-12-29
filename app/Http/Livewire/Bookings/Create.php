@@ -52,23 +52,28 @@ class Create extends Component
     {
         $this->validate();
 
-        $booking = Booking::create([
-            'guest_id' => $this->booking['guest_id'],
-            'status' => 'Booked',
-            'duration' => max(array_column($this->rooms, 'qty')),
-        ]);
+        if (count($this->rooms) > 0) {
+            $booking = Booking::create([
+                'guest_id' => $this->booking['guest_id'],
+                'status' => 'Booked',
+                'duration' => max(array_column($this->rooms, 'qty')),
+            ]);
 
-        $formattedRooms = [];
-        foreach ($this->rooms as $item) {
-            $formattedRooms[] = [
-                'room_id' => $item['room_id'],
-                'qty' => $item['qty'],
-                'checkin' => $item['checkin'],
-                'checkout' => $item['checkout'],
-            ];
+            $formattedRooms = [];
+            foreach ($this->rooms as $item) {
+                $formattedRooms[] = [
+                    'room_id' => $item['room_id'],
+                    'qty' => $item['qty'],
+                    'checkin' => $item['checkin'],
+                    'checkout' => $item['checkout'],
+                ];
+            }
+            $booking->rooms()->attach($formattedRooms);
+
+            return redirect()->route('bookings.index')->with(['success' => 'Pemesanan berhasil dibuat!']);
+        } else {
+            $this->dispatchBrowserEvent('info', ['message' => 'Masukan data kamar']);
         }
-
-        $booking->rooms()->attach($formattedRooms);
     }
 
     public function mount()

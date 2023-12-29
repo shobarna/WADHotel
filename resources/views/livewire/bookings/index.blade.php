@@ -40,7 +40,7 @@
                         <select id="byStatus" wire:model="byStatus"
                             class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
                             <option value="">Semua</option>
-                            <option value="Success">Success</option>
+                            <option value="Booked">Booked</option>
                             <option value="Done">Done</option>
                             <option value="Cancel">Cancel</option>
                         </select>
@@ -110,7 +110,7 @@
                                         </x-slot>
 
                                         <x-slot name="content">
-                                            <a href=""
+                                            <a href="{{ route('bookings.detail', ['id' => $item->id]) }}"
                                                 class="flex cursor-pointer hover:bg-gray-50 items-center gap-x-2 rounded-sm px-2 py-1.5 text-sm">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

@@ -23,9 +23,9 @@ class Index extends Component
 
     public function delete($id)
     {
-        $type = Room::find($id);
+        $room = Room::find($id);
 
-        $type->delete();
+        $room->delete();
 
         $this->dispatchBrowserEvent('deleted');
     }

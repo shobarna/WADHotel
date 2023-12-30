@@ -116,6 +116,9 @@
                                         @endforelse
                                     </tbody>
                                 </table>
+                                <div class="px-2 py-4">
+                                    {{ $allRooms->links() }}
+                                </div>
                             </div>
                         </x-modal>
                     </div>

@@ -16,6 +16,11 @@ class Room extends Model
         return $this->belongsTo(Type::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(BookingRoom::class);
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

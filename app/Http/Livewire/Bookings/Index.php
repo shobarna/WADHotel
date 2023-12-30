@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Bookings;
 
+use App\Models\Room;
 use App\Models\Booking;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -9,26 +10,38 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     protected $listeners = [
-        'confirm' => 'delete',
-        'confirmBulk' => 'deleteSelected'
+        'confirmReschedule' => 'reschedule',
+        'confirmCancel' => 'cancel',
     ];
 
-    public function validationDelete($id)
+    public function validationReschedule($id)
     {
-        $this->dispatchBrowserEvent('validation', [
-            'id' => $id
-        ]);
+        $this->dispatchBrowserEvent('validationReschedule');
     }
 
-    public function delete($id)
+    public function validationCancel($id)
+    {
+        $this->dispatchBrowserEvent('validationCancel');
+    }
+
+    public function reschedule($id)
     {
         $booking = Booking::find($id);
+        foreach ($booking->rooms as $item) {
+            Room::find($item->id)->update(['status' => 0]);
+        }
+        $booking->update(['status' => 'Reschedule']);
+        return redirect()->route('bookings.update', ['id' => $booking->id])->with(['success' => 'Pemesanan berhasil reschedule!']);
+    }
 
-        $booking->rooms()->detach();
-
-        $booking->delete();
-
-        $this->dispatchBrowserEvent('deleted');
+    public function cancel($id)
+    {
+        $booking = Booking::find($id);
+        foreach ($booking->rooms as $item) {
+            Room::find($item->id)->update(['status' => 0]);
+        }
+        $booking->update(['status' => 'Cancel']);
+        $this->dispatchBrowserEvent('info', ['message' => 'Pemesanan telah dibatalkan']);
     }
 
     use WithPagination;
@@ -47,11 +60,12 @@ class Index extends Component
             ->paginate(20);
 
         $total = Booking::count();
-        // $available = Booking::where('status', 0)->count();
+        $done = Booking::where('status', 'Done')->count();
 
         return view('livewire.bookings.index', [
             'bookings' => $bookings,
             'total' => $total,
+            'done' => $done,
         ]);
     }
 }

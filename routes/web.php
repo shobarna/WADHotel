@@ -40,6 +40,12 @@ Route::middleware('auth')->group(function () {
     Route::get('bookings/detail/{id}', App\Http\Livewire\Bookings\Detail::class)->name('bookings.detail');
     Route::get('bookings/update/{id}', App\Http\Livewire\Bookings\Update::class)->name('bookings.update');
 
+    // PEMBAYARAN 
+    Route::get('payments', App\Http\Livewire\Payments\Index::class)->name('payments.index');
+    Route::get('payments/create', App\Http\Livewire\Payments\Create::class)->name('payments.create');
+    Route::get('payments/detail/{id}', App\Http\Livewire\Payments\Detail::class)->name('payments.detail');
+    // Route::get('payments/update/{id}', App\Http\Livewire\Bookings\Update::class)->name('payments.update');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

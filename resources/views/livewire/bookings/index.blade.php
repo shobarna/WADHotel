@@ -76,7 +76,7 @@
                         @forelse ($bookings as $item)
                             <tr class="">
                                 <td class="px-6 w-1/5 py-4 whitespace-nowrap">
-                                    {{ $item->id }}{{ $item->created_at->format('Ymd') }}
+                                    B-{{ $item->id }}{{ $item->created_at->format('Ymd') }}
                                 </td>
                                 <td class="px-6 w-1/5 py-4 whitespace-nowrap">
                                     {{ $item->guest->firstname }} {{ $item->guest->lastname }}

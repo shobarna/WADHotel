@@ -51,7 +51,7 @@
         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
         x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
         <div
-            class="relative inline-block p-6 max-w-xl text-left transition-all transform bg-white rounded-lg shadow-xl min-w-[400px] max-h-[90vh] overflow-auto">
+            class="relative inline-block p-6 max-w-xl text-left transition-all transform bg-white rounded-lg shadow-xl min-w-[400px] max-w-[90vh] max-h-[90vh] overflow-auto">
             {{ $slot }}
         </div>
     </div>

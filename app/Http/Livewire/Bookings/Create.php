@@ -2,18 +2,18 @@
 
 namespace App\Http\Livewire\Bookings;
 
-use App\Models\Booking;
-use App\Models\Guest;
-use App\Models\Room;
 use Carbon\Carbon;
+use App\Models\Room;
+use App\Models\Guest;
+use App\Models\Booking;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Create extends Component
 {
     public $booking = [];
     public $duration;
     public $rooms = [];
-    public $allRooms = [];
 
     public function selectRoom($roomId)
     {
@@ -70,21 +70,24 @@ class Create extends Component
             }
             $booking->rooms()->attach($formattedRooms);
 
+            foreach ($this->rooms as $item) {
+                Room::find($item['room_id'])->update(['status' => 1]);
+            }
+
             return redirect()->route('bookings.index')->with(['success' => 'Pemesanan berhasil dibuat!']);
         } else {
             $this->dispatchBrowserEvent('info', ['message' => 'Masukan data kamar']);
         }
     }
 
-    public function mount()
-    {
-        $this->allRooms = Room::where('status', 0)->get();
-    }
+    use WithPagination;
 
     public function render()
     {
         return view('livewire.bookings.create', [
             'guests' => Guest::all(),
+            'allRooms' => Room::where('status', 0)->orderBy('created_at', 'asc')
+                ->paginate(5),
         ]);
     }
 }

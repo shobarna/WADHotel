@@ -100,7 +100,7 @@
                                     @if (!$item->status)
                                         <span class="text-green-600">Available</span>
                                     @else
-                                        Booked
+                                        <span class="text-yellow-600">Booked</span>
                                     @endif
                                 </td>
                                 <td class="flex gap-x-2 px-6 py-4 cursor-default">

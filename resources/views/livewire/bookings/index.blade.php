@@ -14,7 +14,7 @@
                     </div>
 
                     <p class="mt-1 text-sm text-gray-500">total Pemesanan yang <span class="text-blue-600">Done</span>
-                        adalah pemesanan
+                        adalah <strong>{{ $done }}</strong> pemesanan
                     </p>
                 </div>
 
@@ -83,7 +83,7 @@
                                 </td>
                                 <td class="px-6 w-1/5 py-4 whitespace-nowrap">
                                     <span
-                                        class="{{ $item->status === 'Booked' ? 'text-sky-500' : ($item->status === 'Done' ? 'text-green-500' : 'text-red-500') }}">
+                                        class="{{ $item->status === 'Booked' ? 'text-green-500' : ($item->status === 'Done' ? 'text-blue-500' : ($item->status === 'Reschedule' ? 'text-yellow-500' : 'text-red-500')) }}">
                                         {{ $item->status }}
                                     </span>
                                 </td>
@@ -94,7 +94,7 @@
                                     {{ $item->created_at->diffForHumans() }}
                                 </td>
                                 <td class="flex gap-x-2 px-6 py-4 cursor-default items-center">
-                                    @if ($item->status === 'Done')
+                                    @if ($item->status !== 'Booked')
                                         <a href="{{ route('bookings.detail', ['id' => $item->id]) }}"
                                             class="px-1 py-2 rounded flex items-center text-xs transition duration-300 hover:bg-sky-100 hover:shadow">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -134,7 +134,7 @@
                                                     </svg>
                                                     Detail
                                                 </a>
-                                                <a href="{{ route('bookings.update', ['id' => $item->id]) }}"
+                                                <button wire:click="reschedule({{ $item->id }})"
                                                     class="flex cursor-pointer hover:bg-gray-50 items-center gap-x-2 rounded-sm px-2 py-1.5 text-sm">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -143,8 +143,8 @@
                                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                                     </svg>
                                                     Reschedule
-                                                </a>
-                                                <a href="{{ route('bookings.update', ['id' => $item->id]) }}"
+                                                </button>
+                                                <button wire:click="cancel({{ $item->id }})"
                                                     class="flex cursor-pointer hover:bg-gray-50 items-center gap-x-2 rounded-sm px-2 py-1.5 text-sm">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                                         fill="currentColor" class="w-4 h-4 text-red-600">
@@ -152,7 +152,7 @@
                                                             d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
                                                     </svg>
                                                     Batal
-                                                </a>
+                                                </button>
                                             </x-slot>
                                         </x-dropdown>
                                     @endif
@@ -175,5 +175,42 @@
             </div>
         </div>
     </div>
-    @include('validation')
+    <script>
+        window.addEventListener('validationCancel', event => {
+            iziToast.question({
+                timeout: 20000,
+                close: false,
+                overlay: true,
+                displayMode: 'once',
+                id: 'question',
+                zindex: 999,
+                title: 'Peringatan!',
+                message: 'Apakah anda yakin?',
+                position: 'center',
+                buttons: [
+                    ['<button><b>YA</b></button>', function(instance, toast) {
+
+                        Livewire.emit('confirmCancel', event.detail.id);
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }, true],
+                    ['<button>TIDAK</button>', function(instance, toast) {
+
+                        instance.hide({
+                            transitionOut: 'fadeOut'
+                        }, toast, 'button');
+
+                    }],
+                ],
+                onClosing: function(instance, toast, closedBy) {
+                    console.info('Closing | closedBy: ' + closedBy);
+                },
+                onClosed: function(instance, toast, closedBy) {
+                    console.info('Closed | closedBy: ' + closedBy);
+                }
+            });
+        })
+    </script>
 </div>

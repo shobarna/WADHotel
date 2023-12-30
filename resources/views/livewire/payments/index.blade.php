@@ -18,6 +18,17 @@
                 </div>
 
                 <div class="flex items-center gap-x-3">
+                    <a href="{{ route('payments.discount.index') }}"
+                        class="flex items-center justify-center w-1/2 px-4 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg gap-x-2 sm:w-auto dark:hover:bg-gray-800 dark:bg-gray-900 hover:bg-gray-100 dark:text-gray-200 dark:border-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+                        </svg>
+
+                        <span>Kelola Discount</span>
+                    </a>
 
                     <a href="{{ route('payments.create') }}"
                         class="flex items-center justify-center w-1/2 px-4 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600">
@@ -73,7 +84,11 @@
                                     {{ $item->booking->guest->firstname }} {{ $item->booking->guest->lastname }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @currency($item->subtotal)
+                                    <span class="{{ $item->discount ? 'line-through' : '' }}">@currency($item->subtotal)</span>
+                                    @if ($item->discount)
+                                        <br>
+                                        @currency($item->total)
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     {{ $item->created_at->diffForHumans() }}

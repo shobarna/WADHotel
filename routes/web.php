@@ -44,7 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('payments', App\Http\Livewire\Payments\Index::class)->name('payments.index');
     Route::get('payments/create', App\Http\Livewire\Payments\Create::class)->name('payments.create');
     Route::get('payments/detail/{id}', App\Http\Livewire\Payments\Detail::class)->name('payments.detail');
-    // Route::get('payments/update/{id}', App\Http\Livewire\Bookings\Update::class)->name('payments.update');
+
+    // DISCOUNT 
+    Route::get('discount', App\Http\Livewire\Discount\Index::class)->name('payments.discount.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

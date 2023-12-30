@@ -18,10 +18,6 @@ class Index extends Component
             $query->whereHas('booking', function ($subQuery) {
                 $subQuery->where('guest_id', $this->byGuest);
             });
-        })->when($this->byGuest, function ($query) {
-            $query->whereHas('booking', function ($subQuery) {
-                $subQuery->where('guest_id', $this->byGuest);
-            });
         })->orderBy('created_at', 'desc')
             ->paginate(20);
 

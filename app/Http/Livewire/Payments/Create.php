@@ -72,7 +72,9 @@ class Create extends Component
     public function render()
     {
         return view('livewire.payments.create', [
-            'bookings' => Booking::where('status', 'Booked')->orderBy('created_at', 'asc')
+            'bookings' => Booking::where('status', 'Booked')
+                ->has('payments', false)
+                ->orderBy('created_at', 'asc')
                 ->paginate(5),
         ]);
     }

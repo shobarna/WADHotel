@@ -21,6 +21,11 @@ class Booking extends Model
         return $this->belongsToMany(Room::class, 'booking_room')->withPivot('checkin', 'checkout', 'qty');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

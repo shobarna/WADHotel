@@ -46,13 +46,6 @@
                         </select>
                     </div>
                 </div>
-                <div>
-                    <label for="search" class="block text-sm font-medium leading-6 text-gray-900">Cari</label>
-                    <div class="mt-2">
-                        <input type="text" wire:model="search" id="search" placeholder="Semua"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                    </div>
-                </div>
             </div>
             <div class="bg-white rounded-lg shadow">
                 <table class="w-full table-auto text-sm text-left">

@@ -50,7 +50,7 @@
                                 <p class="text-sm font-medium leading-6 text-gray-500">Nomor Pemesanan</p>
                                 <div class="mt-1">
                                     <p class="font-semibold text-base text-gray-900">
-                                        {{ $data->id }}{{ $data->created_at->format('Ymd') }}
+                                        B-{{ $data->id }}{{ $data->created_at->format('Ymd') }}
                                     </p>
                                 </div>
                             </div>

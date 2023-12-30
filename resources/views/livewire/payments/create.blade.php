@@ -6,7 +6,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
             <div class="sm:flex sm:items-center sm:justify-between">
                 <div class="flex items-center gap-x-4">
-                    <a href="{{ route('bookings.index') }}" class="flex items-center text-sky-500 drop-shadow">
+                    <a href="{{ route('payments.index') }}" class="flex items-center text-sky-500 drop-shadow">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -155,17 +155,39 @@
                     @endforelse
                     <div class="pt-4 border-t text-right space-y-4">
                         <div>
-                            <p class="text-sm font-medium leading-6 text-gray-500">Total</p>
+                            <p class="text-sm font-medium leading-6 text-gray-500">
+                                @if ($discount)
+                                    sub
+                                @endif Total
+                            </p>
                             <div class="mt-1">
                                 <p class="font-semibold text-base text-gray-900">
-                                    @if (isset($payment['total']))
-                                        @currency($payment['total'])
+                                    @if (isset($payment['subtotal']))
+                                        @currency($payment['subtotal'])
                                     @else
                                         0
                                     @endif
                                 </p>
                             </div>
                         </div>
+                        @if ($discount)
+                            <div>
+                                <p class="text-sm font-medium leading-6 text-gray-500">Potongan</p>
+                                <div class="mt-1">
+                                    <p class="font-semibold text-base text-gray-900">
+                                        @currency($discount->price ?? 0)
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium leading-6 text-gray-500">Total</p>
+                                <div class="mt-1">
+                                    <p class="font-semibold text-lg text-gray-900">
+                                        @currency($payment['total'])
+                                    </p>
+                                </div>
+                            </div>
+                        @endif
                         <div>
                             <p class="text-sm font-medium leading-6 text-gray-500">Amount</p>
                             <div class="mt-1 flex justify-end">
@@ -194,7 +216,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pt-4 flex items-center justify-end">
+                    <div class="pt-4 flex items-center justify-end gap-x-2">
+                        <button type="button" x-on:click="$dispatch('open-modal', 'discount')"
+                            class="rounded-md bg-violet-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600">Redeem
+                            Code</button>
                         <button type="submit" wire:click="store"
                             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Submit</button>
                     </div>
@@ -202,6 +227,33 @@
             </div>
         </div>
     </div>
+
+    <x-modal name="discount">
+        <h3 class="mb-4 text-lg font-medium leading-6 text-gray-800 capitalize" id="modal-title">
+            Redeem Code !
+        </h3>
+
+        <div class="space-y-4">
+            <div>
+                <div class="mt-2">
+                    <input type="text" wire:model="payment.promo_code"
+                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 sm:flex sm:items-center sm:-mx-2">
+            <button type="button" x-on:click="show = false"
+                class="w-full px-4 py-2 text-sm font-medium tracking-wide text-gray-700 capitalize transition-colors duration-300 transform border border-gray-200 rounded-md sm:w-1/2 sm:mx-2 hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40">
+                Cancel
+            </button>
+
+            <button type="button" x-on:click="show = false" wire:click="redeem"
+                class="w-full px-4 py-2 mt-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md sm:mt-0 sm:w-1/2 sm:mx-2 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                Submit
+            </button>
+        </div>
+    </x-modal>
 
     <x-modal name="roomList">
         <h3 class="mb-4 text-lg font-medium leading-6 text-gray-800 capitalize" id="modal-title">
@@ -225,7 +277,8 @@
                 </thead>
                 <tbody class="text-gray-600 divide-y">
                     @forelse ($bookings as $item)
-                        <tr class="">
+                        <tr class="hover:bg-gray-100 cursor-pointer" wire:click="setBooking({{ $item->id }})"
+                            x-on:click="show = false">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 B-{{ $item->id }}{{ $item->created_at->format('Ymd') }}
                             </td>

@@ -37,12 +37,22 @@
             <div class="bg-white rounded-lg shadow-sm">
                 <div class="p-6 text-gray-900 space-y-8">
                     <div class="flex justify-between items-start gap-4 mb-8">
-                        <div>
-                            <p class="text-sm font-medium leading-6 text-gray-500">Tamu</p>
-                            <div class="mt-2">
-                                <p class="font-semibold text-base text-gray-900">
-                                    {{ $data->guest->firstname . ' ' . $data->guest->lastname }}
-                                </p>
+                        <div class="space-y-6">
+                            <div>
+                                <p class="text-sm font-medium leading-6 text-gray-500">Tamu</p>
+                                <div class="mt-1">
+                                    <p class="font-semibold text-base text-gray-900">
+                                        {{ $data->guest->firstname . ' ' . $data->guest->lastname }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">{{ $data->guest->phone }}</p>
+                                <div class="mt-1">
+                                    <p class="font-semibold text-base text-gray-900">
+                                        {{ $data->guest->address }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div class="text-right space-y-4">

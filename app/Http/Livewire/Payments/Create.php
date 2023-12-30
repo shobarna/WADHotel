@@ -5,9 +5,28 @@ namespace App\Http\Livewire\Payments;
 use App\Models\Booking;
 use App\Models\Payment;
 use Livewire\Component;
+use App\Models\Discount;
 
 class Create extends Component
 {
+    public $discount;
+
+    public function redeem()
+    {
+        $this->discount = Discount::where('code', $this->payment['promo_code'])->first();
+
+        if ($this->discount) {
+
+            $this->payment = array_merge($this->payment, [
+                'total' => $this->payment['subtotal'] - $this->discount->price
+            ]);
+
+            $this->dispatchBrowserEvent('success', ['message' => 'Discount terpasang']);
+        } else {
+            $this->dispatchBrowserEvent('info', ['message' => 'Kurang beruntung']);
+        }
+    }
+
     public $payment = [];
     public $return;
     public $rooms = [];
@@ -36,12 +55,13 @@ class Create extends Component
             ];
         }
 
-        $this->payment = array_merge($this->payment, ['total' => array_sum(array_column($this->rooms, 'subtotal'))]);
+        $this->payment = array_merge($this->payment, ['subtotal' => array_sum(array_column($this->rooms, 'subtotal'))]);
     }
 
     public function updatedPaymentAmount()
     {
-        $this->return = $this->payment['amount'] - $this->payment['total'];
+        $total = $this->payment['total'] ?? $this->payment['subtotal'];
+        $this->return = $this->payment['amount'] - $total;
     }
 
     protected $rules = [
@@ -60,7 +80,9 @@ class Create extends Component
 
         $formatedPayment = [
             'booking_id' => $this->payment['booking_id'],
-            'subtotal' => $this->payment['total'],
+            'subtotal' => $this->payment['subtotal'],
+            'discount' => $this->discount->price ?? null,
+            'total' => $this->payment['total'] ?? $this->payment['subtotal'],
             'amount' => intval($this->payment['amount']),
         ];
 

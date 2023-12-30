@@ -11,10 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('discounts', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('code');
+            $table->integer('price');
+            $table->timestamps();
+        });
+
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('booking_id')->constrained()->onDelete('cascade');
             $table->integer('subtotal');
+            $table->string('discount')->nullable();
+            $table->integer('total');
             $table->integer('amount');
             $table->timestamps();
         });
@@ -26,5 +36,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('payments');
+        Schema::dropIfExists('discounts');
     }
 };

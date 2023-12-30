@@ -25,7 +25,7 @@ class Index extends Component
             'payments' => $payments,
             'guests' => Guest::all(),
             'total' => Payment::count(),
-            'earnings' => Payment::sum('subtotal'),
+            'earnings' => Payment::sum('total'),
         ]);
     }
 }

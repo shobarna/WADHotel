@@ -15,7 +15,9 @@
                         </svg>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="text-2xl font-bold">{{ $booking->count() - 1 }}+</div>
+                        <div class="text-2xl font-bold">
+                            {{ $booking ? $booking - 1 : $booking }} +
+                        </div>
                         <p
                             class="group-hover:text-sky-600 text-xs text-muted-foreground transition-color duration-300 hover:text-sky-600">
                             <a href="{{ route('bookings.index') }}">Kelola
@@ -54,7 +56,7 @@
                         </svg>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="text-2xl font-bold">4+</div>
+                        <div class="text-2xl font-bold">{{ $guest ? $guest - 1 : $guest }}+</div>
                         <p
                             class="group-hover:text-sky-600 text-xs text-muted-foreground transition-color duration-300 hover:text-sky-600">
                             <a href="{{ route('guests.index') }}">Daftarkan tamu
@@ -73,7 +75,7 @@
                         </svg>
                     </div>
                     <div class="p-6 pt-0">
-                        <div class="text-2xl font-bold">{{ $room->count() - 1 }}+</div>
+                        <div class="text-2xl font-bold">{{ $guest ? $guest - 1 : $guest }}+</div>
                         <p
                             class="group-hover:text-sky-600 text-xs text-muted-foreground transition-color duration-300 hover:text-sky-600">
                             <a href="{{ route('rooms.index') }}">Cek sekarang juga</a>

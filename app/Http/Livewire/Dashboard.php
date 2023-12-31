@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Booking;
+use App\Models\Guest;
 use App\Models\Payment;
 use App\Models\Room;
 use Livewire\Component;
@@ -31,12 +32,14 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.dashboard', [
-            'booking' => Booking::all(),
+            'booking' => Booking::all()->count(),
             'payment' => Payment::sum('total'),
             'payments' => Payment::whereMonth('created_at', Carbon::now()->month)
                 ->limit(5)
+                ->orderBy('created_at', 'desc')
                 ->get(),
-            'room' => Room::all(),
+            'guest' => Guest::all()->count(),
+            'room' => Room::all()->count(),
             'bookings' => Booking::limit(5)->orderBy('created_at', 'desc')->get(),
         ]);
     }

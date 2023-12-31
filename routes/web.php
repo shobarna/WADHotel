@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
 
     // PEMESANAN 
     Route::get('bookings', App\Http\Livewire\Bookings\Index::class)->name('bookings.index');
+    Route::get('bookings/record', App\Http\Livewire\Bookings\Record::class)->name('bookings.record');
     Route::get('bookings/create', App\Http\Livewire\Bookings\Create::class)->name('bookings.create');
     Route::get('bookings/detail/{id}', App\Http\Livewire\Bookings\Detail::class)->name('bookings.detail');
     Route::get('bookings/update/{id}', App\Http\Livewire\Bookings\Update::class)->name('bookings.update');
